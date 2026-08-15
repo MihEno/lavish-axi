@@ -7,39 +7,17 @@ import {
   convertExcalidrawSkeletonsAfterFontsLoad,
   findDuplicateElementIds,
   restoreMermaidLabelLineBreaks,
-} from "lavish-whiteboard-core";
+} from "/Users/kunchen/.no-mistakes/worktrees/ea3c5e639a16/01M0233JW80SG4FSTYJ1BCRR4F/src/whiteboard-core.js";
 
 /** @type {any} */ (window).EXCALIDRAW_ASSET_PATH = `${location.origin}/whiteboard-assets/`;
 
-const LIVE_DECK_LINES = [
-  "1  Scan + classify",
-  "checks - compliance - mergeable - blast radius - risky paths",
-  "FLEET_TOKEN, deterministic",
-];
-
-const CASES = [
-  {
-    id: "br",
-    title: "Live-deck label with <br> breaks",
-    source: `flowchart TD
-  SCAN["1  Scan + classify<br>checks - compliance - mergeable - blast radius - risky paths<br>FLEET_TOKEN, deterministic"]`,
-    expectedLines: LIVE_DECK_LINES,
-  },
-  {
-    id: "brslash",
-    title: "Same label with <br/> breaks",
-    source: `flowchart TD
-  SCAN["1  Scan + classify<br/>checks - compliance - mergeable - blast radius - risky paths<br/>FLEET_TOKEN, deterministic"]`,
-    expectedLines: LIVE_DECK_LINES,
-  },
-  {
-    id: "newline",
-    title: "Same label with \\\\n breaks",
-    source: `flowchart TD
-  SCAN["1  Scan + classify\\nchecks - compliance - mergeable - blast radius - risky paths\\nFLEET_TOKEN, deterministic"]`,
-    expectedLines: LIVE_DECK_LINES,
-  },
-];
+const REPORTED_SOURCE = `flowchart LR
+  SCAN["1 Scan + classify<br>checks - compliance - mergeable - blast radius - risky paths<br>FLEET_TOKEN, deterministic"]
+  BR["classify<br>checks"]
+  NL["alpha\\nbeta"]
+  SINGLE["Ready?"]
+  SCAN --> BR --> NL --> SINGLE
+`;
 
 const metricsCanvas = document.createElement("canvas");
 const metricsContext = metricsCanvas.getContext("2d");
@@ -83,135 +61,152 @@ function materialize(skeletons) {
   return elements;
 }
 
-function findLabel(elements, expectedLines) {
-  const expected = expectedLines.join("\n");
-  return elements.find(
-    (element) =>
-      element.type === "text" &&
-      (element.originalText === expected || element.text === expected || String(element.text || "").includes("\n")),
-  );
+function textElements(elements) {
+  return (elements || [])
+    .filter((element) => element?.type === "text" && !element.isDeleted)
+    .map((element) => {
+      const container = (elements || []).find((item) => item.id === element.containerId);
+      const measured = measureText(element);
+      const expectedX = container ? container.x + (container.width - element.width) / 2 : null;
+      const expectedY = container ? container.y + (container.height - element.height) / 2 : null;
+      return {
+        id: element.id,
+        containerId: element.containerId || null,
+        text: String(element.text || ""),
+        originalText: String(element.originalText || ""),
+        lines: String(element.text || "").split("\n"),
+        fusedClassify: String(element.text || "").includes("classifychecks"),
+        fusedPaths: String(element.text || "").includes("pathsFLEET_TOKEN"),
+        hasHtmlBreak: /<br/i.test(String(element.text || "") + String(element.originalText || "")),
+        width: element.width,
+        height: element.height,
+        x: element.x,
+        y: element.y,
+        measured,
+        container: container
+          ? {
+              id: container.id,
+              x: container.x,
+              y: container.y,
+              width: container.width,
+              height: container.height,
+            }
+          : null,
+        centeredX: expectedX == null ? null : Math.abs(element.x - expectedX) < 0.6,
+        centeredY: expectedY == null ? null : Math.abs(element.y - expectedY) < 0.6,
+      };
+    });
 }
 
-function inspectLabel(elements, expectedLines) {
-  const label =
-    elements.find((element) => element.type === "text" && String(element.originalText || "") === expectedLines.join("\n")) ||
-    elements.find((element) => element.type === "text" && String(element.text || "").includes(expectedLines[0]));
-  const original = String(label?.originalText || "");
-  const text = String(label?.text || "");
-  const measured = label ? measureText(label) : { width: 0, height: 0 };
-  const container = label?.containerId
-    ? elements.find((element) => element.id === label.containerId)
-    : null;
-  return {
-    found: Boolean(label),
-    original,
-    text,
-    lines: original.split("\n"),
-    fusedClassify: original.includes("classifychecks") || text.includes("classifychecks"),
-    fusedFleet: original.includes("pathsFLEET_TOKEN") || text.includes("pathsFLEET_TOKEN"),
-    hasHtmlBreak: original.includes("<br") || text.includes("<br"),
-    width: label?.width ?? null,
-    height: label?.height ?? null,
-    measuredWidth: measured.width,
-    measuredHeight: measured.height,
-    containerWidth: container?.width ?? null,
-    containerHeight: container?.height ?? null,
-    boxFits:
-      Boolean(label) &&
-      measured.width <= Number(label.width) + 0.1 &&
-      measured.height <= Number(label.height) + 0.1,
-    containerFits:
-      Boolean(container) &&
-      Number(container.width) + 0.1 >= Number(label?.width) &&
-      Number(container.height) + 0.1 >= Number(label?.height),
-  };
-}
-
-async function convertCase(source) {
+async function convert(source, { restore }) {
   const parsed = await parseMermaidToExcalidraw(source, { themeVariables: { fontSize: "16px" } });
-  const skeletons = restoreMermaidLabelLineBreaks(parsed.elements);
-  const elements = restoreMermaidLabelLineBreaks(
-    await convertExcalidrawSkeletonsAfterFontsLoad(skeletons, {
-      convert: materialize,
-      loadFonts: async (firstPass) => {
-        await loadFonts(firstPass, parsed.files || null);
-      },
-    }),
-    { measure: measureText },
-  );
-  return { elements, files: parsed.files || null };
+  const skeletons = restore ? restoreMermaidLabelLineBreaks(parsed.elements) : parsed.elements;
+  const elements = restore
+    ? restoreMermaidLabelLineBreaks(
+        await convertExcalidrawSkeletonsAfterFontsLoad(skeletons, {
+          convert: materialize,
+          loadFonts: async (firstPass) => {
+            await loadFonts(firstPass, parsed.files || null);
+          },
+        }),
+        { measure: measureText },
+      )
+    : materialize(skeletons);
+  if (!restore) await loadFonts(elements, parsed.files || null);
+  const canvas = await exportToCanvas({
+    elements,
+    appState: { exportBackground: true, exportPadding: 24, viewBackgroundColor: "#fffaf3" },
+    files: parsed.files || null,
+  });
+  return { elements, canvas, labels: textElements(elements) };
 }
 
-function card(title, canvas, inspection) {
-  const wrap = document.createElement("section");
-  wrap.style.cssText =
-    "background:#161410;border:1px solid #3a342c;border-radius:16px;padding:20px 24px;margin:0 0 24px;color:#f4efe4;font-family:ui-sans-serif,system-ui,sans-serif;";
-  const heading = document.createElement("h2");
-  heading.textContent = title;
-  heading.style.cssText = "margin:0 0 12px;font-size:18px;font-weight:600;";
-  const status = document.createElement("p");
-  const ok =
-    inspection.found &&
-    !inspection.fusedClassify &&
-    !inspection.fusedFleet &&
-    !inspection.hasHtmlBreak &&
-    inspection.lines.length === 3 &&
-    inspection.boxFits &&
-    inspection.containerFits;
-  status.textContent = ok
-    ? "PASS: three real lines, no fused words, box sized to the line set"
-    : `FAIL: ${JSON.stringify(inspection)}`;
-  status.style.cssText = `margin:0 0 12px;font-size:14px;color:${ok ? "#8fbf8a" : "#d46a4a"};`;
-  const pre = document.createElement("pre");
-  pre.textContent = inspection.lines.map((line, index) => `${index + 1}. ${line}`).join("\n");
-  pre.style.cssText =
-    "margin:0 0 16px;padding:12px 14px;background:#0f0d0a;border-radius:10px;font:13px/1.45 ui-monospace,monospace;white-space:pre-wrap;";
-  canvas.style.cssText = "display:block;max-width:100%;height:auto;background:#fff;border-radius:10px;";
-  wrap.append(heading, status, pre, canvas);
-  return { wrap, ok };
+function heading(text) {
+  const el = document.createElement("h2");
+  el.textContent = text;
+  document.body.appendChild(el);
+}
+
+function note(text, className) {
+  const el = document.createElement("p");
+  el.className = className || "note";
+  el.textContent = text;
+  document.body.appendChild(el);
+}
+
+function renderPanel(title, conversion, kind) {
+  const panel = document.createElement("section");
+  panel.className = `panel ${kind}`;
+  const h = document.createElement("h3");
+  h.textContent = title;
+  panel.appendChild(h);
+  conversion.canvas.style.maxWidth = "100%";
+  conversion.canvas.style.height = "auto";
+  conversion.canvas.setAttribute("data-kind", kind);
+  panel.appendChild(conversion.canvas);
+  const list = document.createElement("ul");
+  for (const label of conversion.labels) {
+    const item = document.createElement("li");
+    const fused = label.fusedClassify || label.fusedPaths || label.hasHtmlBreak;
+    item.className = fused ? "fail" : label.lines.length > 1 ? "pass" : "ok";
+    item.textContent = `${JSON.stringify(label.originalText)} · ${label.lines.length} line(s) · ${Math.round(label.width)}×${Math.round(label.height)}`;
+    list.appendChild(item);
+  }
+  panel.appendChild(list);
+  document.body.appendChild(panel);
 }
 
 async function run() {
-  document.body.style.cssText = "margin:0;background:#0b0a08;padding:32px;";
-  const page = document.createElement("main");
-  page.style.cssText = "max-width:1100px;margin:0 auto;";
-  const title = document.createElement("h1");
-  title.textContent = "Mermaid → Excalidraw label line breaks";
-  title.style.cssText = "margin:0 0 8px;color:#f4efe4;font:600 28px ui-sans-serif,system-ui,sans-serif;";
-  const lead = document.createElement("p");
-  lead.textContent =
-    "Live-deck reproduction: the three-line Scan + classify node must keep real line breaks in the Excalidraw box.";
-  lead.style.cssText = "margin:0 0 28px;color:#c9c0b0;font:16px/1.5 ui-sans-serif,system-ui,sans-serif;";
-  page.append(title, lead);
-  document.body.append(page);
+  document.body.innerHTML = "";
+  heading("Mermaid → Excalidraw label line breaks");
+  note(
+    'Reported node: "1 Scan + classify" / "checks - compliance - mergeable - blast radius - risky paths" / "FLEET_TOKEN, deterministic"',
+  );
 
-  const results = [];
-  for (const item of CASES) {
-    const { elements, files } = await convertCase(item.source);
-    const inspection = inspectLabel(elements, item.expectedLines);
-    const canvas = await exportToCanvas({
-      elements,
-      appState: { exportBackground: true, exportPadding: 24, viewBackgroundColor: "#ffffff" },
-      files,
-    });
-    const { wrap, ok } = card(item.title, canvas, inspection);
-    page.append(wrap);
-    results.push({
-      id: item.id,
-      ok,
-      ...inspection,
-      png: canvas.toDataURL("image/png"),
-    });
-  }
+  const broken = await convert(REPORTED_SOURCE, { restore: false });
+  const fixed = await convert(REPORTED_SOURCE, { restore: true });
 
-  const allPass = results.every((item) => item.ok);
-  document.body.dataset.result = JSON.stringify({
-    pass: allPass,
-    cases: results.map(({ png, ...rest }) => rest),
-  });
-  window.__linebreakEvidence = results;
+  renderPanel("Before restore (fused words, no real line breaks)", broken, "before");
+  renderPanel("After restore (real \\n, box sized to the line set)", fixed, "after");
+
+  const reported = fixed.labels.find((label) => label.originalText.includes("FLEET_TOKEN"));
+  const br = fixed.labels.find((label) => label.originalText === "classify\nchecks");
+  const nl = fixed.labels.find((label) => label.originalText === "alpha\nbeta");
+  const single = fixed.labels.find((label) => label.originalText === "Ready?");
+  const brokenReported = broken.labels.find((label) => /FLEET_TOKEN|classify/.test(label.originalText + label.text));
+
+  const result = {
+    pass: Boolean(
+      reported &&
+        reported.lines.length === 3 &&
+        !reported.fusedClassify &&
+        !reported.fusedPaths &&
+        !reported.hasHtmlBreak &&
+        reported.centeredX &&
+        reported.centeredY &&
+        br?.lines.length === 2 &&
+        nl?.lines.length === 2 &&
+        single?.lines.length === 1 &&
+        brokenReported &&
+        (brokenReported.fusedClassify || brokenReported.hasHtmlBreak || brokenReported.lines.length === 1),
+    ),
+    reported: reported || null,
+    br: br || null,
+    nl: nl || null,
+    single: single || null,
+    beforeReported: brokenReported || null,
+    beforeLabels: broken.labels,
+    afterLabels: fixed.labels,
+  };
+  document.body.dataset.result = JSON.stringify(result);
+  return result;
 }
 
-run().catch((error) => {
-  document.body.dataset.result = JSON.stringify({ pass: false, error: error?.stack || String(error) });
-});
+run().then(
+  (result) => {
+    document.body.dataset.result = JSON.stringify(result);
+  },
+  (error) => {
+    document.body.dataset.result = JSON.stringify({ pass: false, error: error?.stack || String(error) });
+  },
+);

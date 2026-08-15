@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mermaid label line-break fix</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; padding: 32px; font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; background: #14120e; color: #f4efe4; }
+    h1 { font-size: 28px; font-weight: 560; margin: 0 0 8px; }
+    .lede { color: #c9c0ae; max-width: 880px; margin: 0 0 28px; line-height: 1.45; }
+    .grid { display: grid; gap: 18px; }
+    .case { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: #1d1a14; border: 1px solid #3a3428; border-radius: 14px; padding: 16px; }
+    h2 { grid-column: 1 / -1; margin: 0; font-size: 15px; letter-spacing: 0.02em; color: #e8dfcc; }
+    .col h3 { margin: 0 0 10px; font-size: 13px; font-weight: 600; }
+    .before h3 { color: #d96c4f; }
+    .after h3 { color: #8fad7a; }
+    .stage { position: relative; background: #fffaf3; border-radius: 10px; overflow: hidden; max-width: 100%; }
+    .box { position: absolute; border: 2px solid #1d1a14; border-radius: 8px; background: #f3ead8; box-sizing: border-box; }
+    .label { position: absolute; white-space: pre-wrap; font: 16px/1.25 "IBM Plex Sans", ui-sans-serif, sans-serif; color: #14120e; text-align: center; overflow: hidden; }
+    .meta { margin: 10px 0 0; font: 12px/1.45 ui-monospace, SFMono-Regular, monospace; color: #c9c0ae; }
+    .fail { color: #d96c4f; }
+    .pass { color: #8fad7a; }
+  </style>
+</head>
+<body>
+  <h1>Mermaid → Excalidraw keeps real line breaks</h1>
+  <p class="lede">The reported node fused “classifychecks” and “pathsFLEET_TOKEN” because literal &lt;br&gt; and \n stayed in the Excalidraw text. After restore, those markers become real newlines, the box grows to the line set, and bound text is re-centered.</p>
+  <div class="grid">
+    <section class="case">
+          <h2>Reported three-line node</h2>
+          <div class="col before">
+            <h3>Before: literal break markers, clipped box</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:220px;top:48px;width:80px;height:24px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">1 Scan + classify&lt;br&gt;checks - compliance - mergeable - blast radius - risky paths&lt;br&gt;FLEET_TOKEN, deterministic</div>
+  </div>
+            <p class="meta fail">text="1 Scan + classify<br>checks - compliance - mergeable - blast radius - risky paths<br>FLEET_TOKEN, deterministic" · box 80×24 · label (14,24)</p>
+          </div>
+          <div class="col after">
+            <h3>After: real newlines, resized and re-centered</h3>
+            <div class="stage" style="width:648px;height:120px">
+    <div class="box" style="left:16px;top:22px;width:616px;height:76px"></div>
+    <div class="label" style="left:24px;top:30px;width:600px;height:60px">1 Scan + classify
+checks - compliance - mergeable - blast radius - risky paths
+FLEET_TOKEN, deterministic</div>
+  </div>
+            <p class="meta pass">text="1 Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic" · box 616×76 · label (-250,2) · centered true</p>
+          </div>
+        </section>
+<section class="case">
+          <h2><br> break</h2>
+          <div class="col before">
+            <h3>Before: literal break markers, clipped box</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:220px;top:48px;width:80px;height:24px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">classify&lt;br&gt;checks</div>
+  </div>
+            <p class="meta fail">text="classify<br>checks" · box 80×24 · label (14,24)</p>
+          </div>
+          <div class="col after">
+            <h3>After: real newlines, resized and re-centered</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:212px;top:32px;width:96px;height:56px"></div>
+    <div class="label" style="left:220px;top:40px;width:80px;height:40px">classify
+checks</div>
+  </div>
+            <p class="meta pass">text="classify\nchecks" · box 96×56 · label (10,12) · centered true</p>
+          </div>
+        </section>
+<section class="case">
+          <h2><br/> break</h2>
+          <div class="col before">
+            <h3>Before: literal break markers, clipped box</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:220px;top:48px;width:80px;height:24px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">classify&lt;br/&gt;checks</div>
+  </div>
+            <p class="meta fail">text="classify<br/>checks" · box 80×24 · label (14,24)</p>
+          </div>
+          <div class="col after">
+            <h3>After: real newlines, resized and re-centered</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:212px;top:32px;width:96px;height:56px"></div>
+    <div class="label" style="left:220px;top:40px;width:80px;height:40px">classify
+checks</div>
+  </div>
+            <p class="meta pass">text="classify\nchecks" · box 96×56 · label (10,12) · centered true</p>
+          </div>
+        </section>
+<section class="case">
+          <h2>\\n break</h2>
+          <div class="col before">
+            <h3>Before: literal break markers, clipped box</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:220px;top:48px;width:80px;height:24px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">alpha\nbeta</div>
+  </div>
+            <p class="meta fail">text="alpha\\nbeta" · box 80×24 · label (14,24)</p>
+          </div>
+          <div class="col after">
+            <h3>After: real newlines, resized and re-centered</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:216px;top:32px;width:88px;height:56px"></div>
+    <div class="label" style="left:224px;top:40px;width:72px;height:40px">alpha
+beta</div>
+  </div>
+            <p class="meta pass">text="alpha\nbeta" · box 88×56 · label (14,12) · centered true</p>
+          </div>
+        </section>
+<section class="case">
+          <h2>Single-line control</h2>
+          <div class="col before">
+            <h3>Before: literal break markers, clipped box</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:220px;top:48px;width:80px;height:24px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">Ready?</div>
+  </div>
+            <p class="meta fail">text="Ready?" · box 80×24 · label (14,24)</p>
+          </div>
+          <div class="col after">
+            <h3>After: real newlines, resized and re-centered</h3>
+            <div class="stage" style="width:520px;height:120px">
+    <div class="box" style="left:216px;top:42px;width:88px;height:36px"></div>
+    <div class="label" style="left:224px;top:50px;width:72px;height:20px">Ready?</div>
+  </div>
+            <p class="meta pass">text="Ready?" · box 88×36 · label (14,22) · centered true</p>
+          </div>
+        </section>
+  </div>
+</body>
+</html>

@@ -2,73 +2,209 @@
   "pass": true,
   "cases": [
     {
-      "id": "br",
-      "ok": true,
-      "found": true,
-      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "lines": [
-        "1  Scan + classify",
+      "id": "reported",
+      "raw": "1 Scan + classify<br>checks - compliance - mergeable - blast radius - risky paths<br>FLEET_TOKEN, deterministic",
+      "expected": [
+        "1 Scan + classify",
+        "checks - compliance - mergeable - blast radius - risky paths",
+        "FLEET_TOKEN, deterministic"
+      ],
+      "afterText": "1 Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "afterOriginalText": "1 Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "afterLines": [
+        "1 Scan + classify",
         "checks - compliance - mergeable - blast radius - risky paths",
         "FLEET_TOKEN, deterministic"
       ],
       "fusedClassify": false,
-      "fusedFleet": false,
+      "fusedPaths": false,
       "hasHtmlBreak": false,
-      "width": 459.2475280761719,
-      "height": 60,
-      "measuredWidth": 459.2475280761719,
-      "measuredHeight": 60,
-      "containerWidth": 612,
-      "containerHeight": 174,
-      "boxFits": true,
-      "containerFits": true
+      "beforeBox": {
+        "id": "reported-box",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 80,
+        "height": 24
+      },
+      "afterBox": {
+        "id": "reported-box",
+        "type": "rectangle",
+        "x": -258,
+        "y": -6,
+        "width": 616,
+        "height": 76
+      },
+      "afterLabel": {
+        "x": -250,
+        "y": 2,
+        "width": 600,
+        "height": 60
+      },
+      "centered": true,
+      "ok": true
+    },
+    {
+      "id": "br",
+      "raw": "classify<br>checks",
+      "expected": [
+        "classify",
+        "checks"
+      ],
+      "afterText": "classify\nchecks",
+      "afterOriginalText": "classify\nchecks",
+      "afterLines": [
+        "classify",
+        "checks"
+      ],
+      "fusedClassify": false,
+      "fusedPaths": false,
+      "hasHtmlBreak": false,
+      "beforeBox": {
+        "id": "br-box",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 80,
+        "height": 24
+      },
+      "afterBox": {
+        "id": "br-box",
+        "type": "rectangle",
+        "x": 2,
+        "y": 4,
+        "width": 96,
+        "height": 56
+      },
+      "afterLabel": {
+        "x": 10,
+        "y": 12,
+        "width": 80,
+        "height": 40
+      },
+      "centered": true,
+      "ok": true
     },
     {
       "id": "brslash",
-      "ok": true,
-      "found": true,
-      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "lines": [
-        "1  Scan + classify",
-        "checks - compliance - mergeable - blast radius - risky paths",
-        "FLEET_TOKEN, deterministic"
+      "raw": "classify<br/>checks",
+      "expected": [
+        "classify",
+        "checks"
+      ],
+      "afterText": "classify\nchecks",
+      "afterOriginalText": "classify\nchecks",
+      "afterLines": [
+        "classify",
+        "checks"
       ],
       "fusedClassify": false,
-      "fusedFleet": false,
+      "fusedPaths": false,
       "hasHtmlBreak": false,
-      "width": 459.2475280761719,
-      "height": 60,
-      "measuredWidth": 459.2475280761719,
-      "measuredHeight": 60,
-      "containerWidth": 612,
-      "containerHeight": 174,
-      "boxFits": true,
-      "containerFits": true
+      "beforeBox": {
+        "id": "brslash-box",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 80,
+        "height": 24
+      },
+      "afterBox": {
+        "id": "brslash-box",
+        "type": "rectangle",
+        "x": 2,
+        "y": 4,
+        "width": 96,
+        "height": 56
+      },
+      "afterLabel": {
+        "x": 10,
+        "y": 12,
+        "width": 80,
+        "height": 40
+      },
+      "centered": true,
+      "ok": true
     },
     {
       "id": "newline",
-      "ok": true,
-      "found": true,
-      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
-      "lines": [
-        "1  Scan + classify",
-        "checks - compliance - mergeable - blast radius - risky paths",
-        "FLEET_TOKEN, deterministic"
+      "raw": "alpha\\nbeta",
+      "expected": [
+        "alpha",
+        "beta"
+      ],
+      "afterText": "alpha\nbeta",
+      "afterOriginalText": "alpha\nbeta",
+      "afterLines": [
+        "alpha",
+        "beta"
       ],
       "fusedClassify": false,
-      "fusedFleet": false,
+      "fusedPaths": false,
       "hasHtmlBreak": false,
-      "width": 459.2475280761719,
-      "height": 60,
-      "measuredWidth": 459.2475280761719,
-      "measuredHeight": 60,
-      "containerWidth": 612,
-      "containerHeight": 150,
-      "boxFits": true,
-      "containerFits": true
+      "beforeBox": {
+        "id": "newline-box",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 80,
+        "height": 24
+      },
+      "afterBox": {
+        "id": "newline-box",
+        "type": "rectangle",
+        "x": 6,
+        "y": 4,
+        "width": 88,
+        "height": 56
+      },
+      "afterLabel": {
+        "x": 14,
+        "y": 12,
+        "width": 72,
+        "height": 40
+      },
+      "centered": true,
+      "ok": true
+    },
+    {
+      "id": "single",
+      "raw": "Ready?",
+      "expected": [
+        "Ready?"
+      ],
+      "afterText": "Ready?",
+      "afterOriginalText": "Ready?",
+      "afterLines": [
+        "Ready?"
+      ],
+      "fusedClassify": false,
+      "fusedPaths": false,
+      "hasHtmlBreak": false,
+      "beforeBox": {
+        "id": "single-box",
+        "type": "rectangle",
+        "x": 10,
+        "y": 20,
+        "width": 80,
+        "height": 24
+      },
+      "afterBox": {
+        "id": "single-box",
+        "type": "rectangle",
+        "x": 6,
+        "y": 14,
+        "width": 88,
+        "height": 36
+      },
+      "afterLabel": {
+        "x": 14,
+        "y": 22,
+        "width": 72,
+        "height": 20
+      },
+      "centered": true,
+      "ok": true
     }
   ]
 }
