@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mermaid to Excalidraw line-break evidence</title>
+    <style>
+      body {
+        margin: 0;
+        background: #0b0a08;
+        color: #f4efe4;
+        font: 16px/1.45 ui-sans-serif, system-ui, sans-serif;
+        padding: 32px;
+      }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+      .lead {
+        margin: 0 0 24px;
+        color: #c9c0b0;
+      }
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+      section {
+        background: #161410;
+        border: 1px solid #3a342c;
+        border-radius: 16px;
+        padding: 20px 24px;
+      }
+      h2 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      .pass {
+        margin: 0 0 12px;
+        color: #8fbf8a;
+        font-size: 14px;
+      }
+      pre {
+        margin: 0 0 16px;
+        padding: 12px 14px;
+        background: #0f0d0a;
+        border-radius: 10px;
+        font: 13px/1.45 ui-monospace, monospace;
+        white-space: pre-wrap;
+      }
+      img {
+        display: block;
+        width: 100%;
+        background: #fff;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Mermaid → Excalidraw label line breaks</h1>
+      <p class="lead">
+        Live-deck reproduction after the fix. The three-line Scan + classify node keeps real line
+        breaks. Adjacent words are not fused, and the Excalidraw box sizes to the line set.
+      </p>
+      <div class="grid">
+        <section>
+          <h2>Live-deck label with &lt;br&gt; breaks</h2>
+          <p class="pass">PASS: three real lines, no classifychecks / pathsFLEET_TOKEN, box 459×60 inside container 612×174</p>
+          <pre>1. 1  Scan + classify
+2. checks - compliance - mergeable - blast radius - risky paths
+3. FLEET_TOKEN, deterministic</pre>
+          <img src="converted-br.png" alt="Converted Excalidraw node from a Mermaid label that used br tags" />
+        </section>
+        <section>
+          <h2>Same label with &lt;br/&gt; breaks</h2>
+          <p class="pass">PASS: three real lines, no fused words, box 459×60 inside container 612×174</p>
+          <pre>1. 1  Scan + classify
+2. checks - compliance - mergeable - blast radius - risky paths
+3. FLEET_TOKEN, deterministic</pre>
+          <img src="converted-brslash.png" alt="Converted Excalidraw node from a Mermaid label that used self-closing br tags" />
+        </section>
+        <section>
+          <h2>Same label with \n breaks</h2>
+          <p class="pass">PASS: three real lines, no fused words, box 459×60 inside container 612×150</p>
+          <pre>1. 1  Scan + classify
+2. checks - compliance - mergeable - blast radius - risky paths
+3. FLEET_TOKEN, deterministic</pre>
+          <img src="converted-newline.png" alt="Converted Excalidraw node from a Mermaid label that used escaped newlines" />
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

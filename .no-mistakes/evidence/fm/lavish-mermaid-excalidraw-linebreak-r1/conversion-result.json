@@ -1,0 +1,74 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "id": "br",
+      "ok": true,
+      "found": true,
+      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "lines": [
+        "1  Scan + classify",
+        "checks - compliance - mergeable - blast radius - risky paths",
+        "FLEET_TOKEN, deterministic"
+      ],
+      "fusedClassify": false,
+      "fusedFleet": false,
+      "hasHtmlBreak": false,
+      "width": 459.2475280761719,
+      "height": 60,
+      "measuredWidth": 459.2475280761719,
+      "measuredHeight": 60,
+      "containerWidth": 612,
+      "containerHeight": 174,
+      "boxFits": true,
+      "containerFits": true
+    },
+    {
+      "id": "brslash",
+      "ok": true,
+      "found": true,
+      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "lines": [
+        "1  Scan + classify",
+        "checks - compliance - mergeable - blast radius - risky paths",
+        "FLEET_TOKEN, deterministic"
+      ],
+      "fusedClassify": false,
+      "fusedFleet": false,
+      "hasHtmlBreak": false,
+      "width": 459.2475280761719,
+      "height": 60,
+      "measuredWidth": 459.2475280761719,
+      "measuredHeight": 60,
+      "containerWidth": 612,
+      "containerHeight": 174,
+      "boxFits": true,
+      "containerFits": true
+    },
+    {
+      "id": "newline",
+      "ok": true,
+      "found": true,
+      "original": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "text": "1  Scan + classify\nchecks - compliance - mergeable - blast radius - risky paths\nFLEET_TOKEN, deterministic",
+      "lines": [
+        "1  Scan + classify",
+        "checks - compliance - mergeable - blast radius - risky paths",
+        "FLEET_TOKEN, deterministic"
+      ],
+      "fusedClassify": false,
+      "fusedFleet": false,
+      "hasHtmlBreak": false,
+      "width": 459.2475280761719,
+      "height": 60,
+      "measuredWidth": 459.2475280761719,
+      "measuredHeight": 60,
+      "containerWidth": 612,
+      "containerHeight": 150,
+      "boxFits": true,
+      "containerFits": true
+    }
+  ]
+}

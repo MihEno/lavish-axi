@@ -1,0 +1,12 @@
+✔ restoreMermaidLabelLineBreaks turns <br> and <br/> into real newlines without fusing words (0.979958ms)
+✔ restoreMermaidLabelLineBreaks turns mermaid \n label breaks into real newlines (0.082792ms)
+✔ restoreMermaidLabelLineBreaks rewrites materialized text elements and sizes to the line set (0.163708ms)
+✔ restoreMermaidLabelLineBreaks leaves single-line labels and non-label fields alone (0.08025ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42.868
