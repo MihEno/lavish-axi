@@ -1,0 +1,20 @@
+VISION.md acceptance-contract audit
+==================================
+PASS - line count is within required 40-70 range and exactly approved 66: 66
+PASS - six principle sections plus Scope: ## The artifact stays the author's | ## Interaction beats prose | ## An artifact's design is chosen, never defaulted into | ## Nothing interrupts the human | ## Every token is spent on purpose | ## The instructions are the product | ## Scope
+PASS - one prose sentence per source line: 42 prose lines; 0 violations
+PASS - plain hyphens only, with no em dash: none found
+PASS - UTF-8 file ends with newline: yes
+
+Change boundary and authorship
+------------------------------
+Changed files: AGENTS.md,VISION.md
+PASS - base commit had no VISION.md (from-scratch mode)
+Target commit author: kunchenguid <kun@kunchenguid.com>
+Target commit subject: docs: add author-approved VISION.md
+VISION.md SHA-256: 4a247670668069cf25cd75b23495d5837ff6e22a3b9c60b9066d3f504e620b1a
+
+Repository evidence-base preconditions
+--------------------------------------
+GitHub stars: 2889
+Merged owner PRs visible in first 100 results: 80
