@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Semantic table annotation evidence</title>
+<style>
+  :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #f5f7fb; color: #172033; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 56px; }
+  main { max-width: 960px; margin: auto; }
+  h1 { margin: 0 0 8px; font-size: 30px; letter-spacing: -0.03em; }
+  p { color: #5c667a; margin: 0 0 28px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border: 1px solid #dce2ec; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 32px rgba(30, 45, 75, .08); }
+  th, td { padding: 16px 18px; text-align: left; border-bottom: 1px solid #e8ecf2; }
+  thead th { background: #edf2ff; color: #34446b; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 650; }
+  code { color: #4355b9; background: #eef0ff; border-radius: 6px; padding: 3px 7px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Application permissions</h1>
+  <p>A filtered permissions report. Annotate a value to retain its semantic row and column names.</p>
+  <table>
+    <thead><tr><th>Permission / setting</th><th>Visible state</th><th>Database evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Contacts</td><td>None</td><td>No grants</td></tr>
+      <tr><td>Media &amp; Apple Music</td><td>4 apps</td><td><code>Drive</code>, Neovide, Cursor, Alacritty</td></tr>
+      <tr><td>Calendars</td><td>2 apps</td><td>Fantastical, Calendar</td></tr>
+    </tbody>
+  </table>
+</main>
+<script>
+  const openSemanticAnnotation = setInterval(() => {
+    if (!document.querySelector('.lavish-annotation-root')) return;
+    clearInterval(openSemanticAnnotation);
+    document.querySelector('code').click();
+  }, 100);
+</script>
+</body>
+</html>

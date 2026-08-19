@@ -1,0 +1,17 @@
+session:
+  file: /Users/kunchen/.no-mistakes/evidence/01M0E64JJV7Z4G3CP970Z85SY2/table-cell-e2e.html
+  status: feedback
+dom_snapshot: "uid=3 body \"Application permissions A filtered permissions report. Annotate a value to retai\"\n  uid=4 main \"Application permissions A filtered permissions report. Annotate a value to retai\"\n    uid=5 h1 \"Application permissions\"\n    uid=6 p \"A filtered permissions report. Annotate a value to retain its semantic row and c\"\n    uid=7 table \"PERMISSION / SETTING VISIBLE STATE DATABASE EVIDENCE Contacts None No grants Med\"\n      uid=8 thead \"PERMISSION / SETTING VISIBLE STATE DATABASE EVIDENCE\"\n        uid=9 tr \"PERMISSION / SETTING VISIBLE STATE DATABASE EVIDENCE\"\n          uid=10 th \"PERMISSION / SETTING\"\n          uid=11 th \"VISIBLE STATE\"\n          uid=12 th \"DATABASE EVIDENCE\"\n      uid=13 tbody \"Contacts None No grants Media & Apple Music 4 apps Drive, Neovide, Cursor, Alacr\"\n        uid=14 tr \"Contacts None No grants\"\n          uid=15 td \"Contacts\"\n          uid=16 td \"None\"\n          uid=17 td \"No grants\"\n        uid=18 tr \"Media & Apple Music 4 apps Drive, Neovide, Cursor, Alacritty\"\n          uid=19 td \"Media & Apple Music\"\n          uid=20 td \"4 apps\"\n          uid=21 td \"Drive, Neovide, Cursor, Alacritty\"\n            uid=1 code \"Drive\"\n        uid=22 tr \"Calendars 2 apps Fantastical, Calendar\"\n          uid=23 td \"Calendars\"\n          uid=24 td \"2 apps\"\n          uid=25 td \"Fantastical, Calendar\"\n  uid=26 script \"const openSemanticAnnotation = setInterval(() => { if (!document.querySelector('\"\n  uid=27 script"
+prompts[1]:
+  - uid: "1"
+    prompt: Verify this app grant
+    selector: "table > tbody > tr:nth-of-type(2) > td:nth-of-type(3) > code"
+    tag: code
+    text: Drive
+    target:
+      type: table-cell
+      selector: "main > table > tbody > tr:nth-of-type(2) > td:nth-of-type(3)"
+      rowLabel: Media & Apple Music
+      columnLabel: DATABASE EVIDENCE
+      text: "Drive, Neovide, Cursor, Alacritty"
+next_step: "Apply the requested changes to /Users/kunchen/.no-mistakes/evidence/01M0E64JJV7Z4G3CP970Z85SY2/table-cell-e2e.html. Do not respond to the user just yet. Now you must run `lavish-axi poll /Users/kunchen/.no-mistakes/evidence/01M0E64JJV7Z4G3CP970Z85SY2/table-cell-e2e.html --agent-reply \"<message for the user>\"` without --timeout-ms unless the user ended the session. The poll waits silently until the user sends more feedback or ends the session - never kill it. Keep the poll in the foreground by default and let it return the feedback directly to the agent. A background poll is allowed only through a harness-native tracked background-job facility whose completion result is guaranteed to resume or notify the same agent. Never use `nohup`, shell `&`, `disown`, redirected fire-and-forget processes, or a detached terminal without an explicit verified callback merely to keep polling alive. If the harness has no completion-aware background facility, use the foreground poll or first wire a verified wake callback into the surrounding supervisor. Do not tell the user the artifact is being monitored until that wake path is live. If the poll gets killed or times out anyway, just re-run it - queued feedback is never lost."
