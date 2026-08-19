@@ -1,0 +1,32 @@
+{
+  "scenario": "Global mutating-route CSRF origin guard through the public HTTP API",
+  "foreignOrigin": {
+    "status": 403,
+    "body": {
+      "error": "cross-origin request rejected"
+    }
+  },
+  "foreignReferer": {
+    "status": 403,
+    "body": {
+      "error": "cross-origin request rejected"
+    }
+  },
+  "stateCreatedByRejectedRequests": false,
+  "sameOriginRefererWithPath": {
+    "status": 200,
+    "bodyStatus": "opened"
+  },
+  "headerlessCli": {
+    "status": 200,
+    "bodyStatus": "opened"
+  },
+  "foreignOriginSafeGet": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "app": "lavish-axi",
+      "version": "csrf-evidence"
+    }
+  }
+}
