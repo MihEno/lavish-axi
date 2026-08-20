@@ -1,0 +1,11 @@
+{
+  "artifactIsolation": {
+    "opaqueOrigin": true,
+    "errorName": "SecurityError"
+  },
+  "popupEscape": {
+    "message": "PASS: popup escaped the sandbox",
+    "origin": "http://127.0.0.1:43991",
+    "storageRoundTrip": "ok"
+  }
+}

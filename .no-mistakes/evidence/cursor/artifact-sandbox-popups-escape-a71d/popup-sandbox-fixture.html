@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lavish popup sandbox verification</title>
+  <style>
+    :root { color-scheme: light; font-family: ui-sans-serif, system-ui, sans-serif; background: #f4f7fb; color: #172033; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+    main { width: min(680px, calc(100% - 48px)); padding: 40px; border-radius: 24px; background: white; box-shadow: 0 18px 55px rgba(30, 48, 80, .13); }
+    .eyebrow { color: #5261d6; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+    h1 { margin: 10px 0 12px; font-size: 34px; }
+    p { color: #536078; line-height: 1.55; }
+    .result { margin: 24px 0; padding: 18px; border-radius: 14px; background: #eaf8ef; color: #17643a; font-weight: 750; }
+    a { display: inline-block; padding: 13px 18px; border-radius: 12px; background: #2637be; color: white; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">End-to-end browser check</div>
+    <h1>Artifact sandbox remains isolated</h1>
+    <p>The embedded artifact must stay on an opaque origin while its explicitly opened popup escapes the inherited sandbox.</p>
+    <div class="result" id="result">Checking artifact isolation...</div>
+    <a id="open-popup" href="popup-sandbox-result.html" target="_blank">Open verification popup</a>
+  </main>
+  <script>
+    let isolated = false;
+    try { localStorage.setItem("lavish-sandbox-check", "unexpected"); }
+    catch (error) { isolated = error && error.name === "SecurityError"; }
+    document.getElementById("result").textContent = isolated
+      ? "PASS: artifact has no same-origin storage access"
+      : "FAIL: artifact unexpectedly has origin storage access";
+  </script>
+</body>
+</html>

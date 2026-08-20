@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Popup escape result</title>
+  <style>
+    :root { color-scheme: light; font-family: ui-sans-serif, system-ui, sans-serif; background: #edf9f1; color: #123c27; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+    main { text-align: center; width: min(650px, calc(100% - 48px)); padding: 52px; border: 2px solid #71c895; border-radius: 28px; background: white; box-shadow: 0 20px 60px rgba(18, 90, 50, .14); }
+    .mark { display: inline-grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #daf5e4; font-size: 38px; }
+    h1 { margin: 20px 0 12px; font-size: 38px; }
+    p { color: #456454; line-height: 1.6; }
+    code { padding: 4px 8px; border-radius: 6px; background: #edf3ef; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="mark" id="mark">...</div>
+    <h1 id="result">Checking popup sandbox...</h1>
+    <p id="detail"></p>
+  </main>
+  <script>
+    let escaped = false;
+    let detail;
+    try {
+      localStorage.setItem("lavish-popup-check", "escaped");
+      escaped = localStorage.getItem("lavish-popup-check") === "escaped";
+      localStorage.removeItem("lavish-popup-check");
+      detail = `Popup has normal origin storage access at ${location.origin}.`;
+    } catch (error) {
+      detail = `${error.name}: ${error.message}`;
+    }
+    document.getElementById("mark").textContent = escaped ? "✓" : "×";
+    document.getElementById("result").textContent = escaped
+      ? "PASS: popup escaped the sandbox"
+      : "FAIL: popup inherited the sandbox";
+    document.getElementById("detail").textContent = detail;
+  </script>
+</body>
+</html>
