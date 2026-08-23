@@ -1,0 +1,5 @@
+Workflow YAML parsed successfully as a normalized model.
+pull_request.types: opened, edited, reopened
+shared action: kunchenguid/no-mistakes/.github/actions/require-no-mistakes@32d396ac0f29135daf7fcb9964aba9d5f4e796d6
+caller steps: 1; inline run blocks: 0
+Preserved from base: permissions, concurrency, branches, paths-ignore, job name, runs-on, and job-level author exemption.
