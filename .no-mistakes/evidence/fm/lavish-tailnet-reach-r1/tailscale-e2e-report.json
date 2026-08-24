@@ -1,0 +1,34 @@
+{
+  "actual_listeners": [
+    {
+      "address": "127.0.0.1",
+      "port": 53333
+    },
+    {
+      "address": "192.168.4.47",
+      "port": 53333
+    }
+  ],
+  "wildcard_listener_present": false,
+  "phone_ready_session_url": "http://captain-phone.demo.ts.net:53333/session/d948159f2f0cd5c2",
+  "forbidden_host": {
+    "status": 403,
+    "content_type": "text/html; charset=utf-8"
+  },
+  "unknown_session": {
+    "status": 404,
+    "content_type": "text/html; charset=utf-8"
+  },
+  "listeners_after_shutdown": [
+    {
+      "address": "127.0.0.1",
+      "port": 53333,
+      "closed": true
+    },
+    {
+      "address": "192.168.4.47",
+      "port": 53333,
+      "closed": true
+    }
+  ]
+}

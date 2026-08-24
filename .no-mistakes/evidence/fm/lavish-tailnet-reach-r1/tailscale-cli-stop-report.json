@@ -1,0 +1,28 @@
+{
+  "command": "LAVISH_AXI_HOST=127.0.0.1 node bin/lavish-axi.js stop --port 53575",
+  "exit_code": 0,
+  "stdout": "server:\n  status: stopped\n  port: 53575",
+  "stderr": "",
+  "listeners_before_stop": [
+    {
+      "address": "127.0.0.1",
+      "port": 53575
+    },
+    {
+      "address": "192.168.4.47",
+      "port": 53575
+    }
+  ],
+  "listeners_after_stop": [
+    {
+      "address": "127.0.0.1",
+      "port": 53575,
+      "closed": true
+    },
+    {
+      "address": "192.168.4.47",
+      "port": 53575,
+      "closed": true
+    }
+  ]
+}
